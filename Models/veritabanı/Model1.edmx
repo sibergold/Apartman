@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="apartmanModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="arac_bilgileri">
+          <Key>
+            <PropertyRef Name="arac_id" />
+          </Key>
+          <Property Name="arac_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="arac_plaka" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="arac_marka" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="arac_renk" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="kisi_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="kisi_bilgileri">
+          <Key>
+            <PropertyRef Name="kisi_id" />
+          </Key>
+          <Property Name="kisi_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tc_kimlik" Type="nvarchar" MaxLength="11" Nullable="false" />
+          <Property Name="ad" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="soyad" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="cep_telefonu" Type="nvarchar" MaxLength="11" Nullable="false" />
+          <Property Name="Adres" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="park_yeri">
+          <Key>
+            <PropertyRef Name="parkyeri_id" />
+          </Key>
+          <Property Name="parkyeri_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Parkyeri" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="arac_id" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_arac_bilgileri_kisi_bilgileri">
+          <End Role="kisi_bilgileri" Type="Self.kisi_bilgileri" Multiplicity="1" />
+          <End Role="arac_bilgileri" Type="Self.arac_bilgileri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kisi_bilgileri">
+              <PropertyRef Name="kisi_id" />
+            </Principal>
+            <Dependent Role="arac_bilgileri">
+              <PropertyRef Name="kisi_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_park_yeri_arac_bilgileri">
+          <End Role="arac_bilgileri" Type="Self.arac_bilgileri" Multiplicity="1" />
+          <End Role="park_yeri" Type="Self.park_yeri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="arac_bilgileri">
+              <PropertyRef Name="arac_id" />
+            </Principal>
+            <Dependent Role="park_yeri">
+              <PropertyRef Name="arac_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="apartmanModelStoreContainer">
+          <EntitySet Name="arac_bilgileri" EntityType="Self.arac_bilgileri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="kisi_bilgileri" EntityType="Self.kisi_bilgileri" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="park_yeri" EntityType="Self.park_yeri" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_arac_bilgileri_kisi_bilgileri" Association="Self.FK_arac_bilgileri_kisi_bilgileri">
+            <End Role="kisi_bilgileri" EntitySet="kisi_bilgileri" />
+            <End Role="arac_bilgileri" EntitySet="arac_bilgileri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_park_yeri_arac_bilgileri" Association="Self.FK_park_yeri_arac_bilgileri">
+            <End Role="arac_bilgileri" EntitySet="arac_bilgileri" />
+            <End Role="park_yeri" EntitySet="park_yeri" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="apartmanModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="arac_bilgileri">
+          <Key>
+            <PropertyRef Name="arac_id" />
+          </Key>
+          <Property Name="arac_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="arac_plaka" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="arac_marka" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="arac_renk" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="kisi_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="kisi_bilgileri" Relationship="Self.FK_arac_bilgileri_kisi_bilgileri" FromRole="arac_bilgileri" ToRole="kisi_bilgileri" />
+          <NavigationProperty Name="park_yeri" Relationship="Self.FK_park_yeri_arac_bilgileri" FromRole="arac_bilgileri" ToRole="park_yeri" />
+        </EntityType>
+        <EntityType Name="kisi_bilgileri">
+          <Key>
+            <PropertyRef Name="kisi_id" />
+          </Key>
+          <Property Name="kisi_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tc_kimlik" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="soyad" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cep_telefonu" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Adres" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="arac_bilgileri" Relationship="Self.FK_arac_bilgileri_kisi_bilgileri" FromRole="kisi_bilgileri" ToRole="arac_bilgileri" />
+        </EntityType>
+        <EntityType Name="park_yeri">
+          <Key>
+            <PropertyRef Name="parkyeri_id" />
+          </Key>
+          <Property Name="parkyeri_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Parkyeri" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="arac_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="arac_bilgileri" Relationship="Self.FK_park_yeri_arac_bilgileri" FromRole="park_yeri" ToRole="arac_bilgileri" />
+        </EntityType>
+        <Association Name="FK_arac_bilgileri_kisi_bilgileri">
+          <End Role="kisi_bilgileri" Type="Self.kisi_bilgileri" Multiplicity="1" />
+          <End Role="arac_bilgileri" Type="Self.arac_bilgileri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kisi_bilgileri">
+              <PropertyRef Name="kisi_id" />
+            </Principal>
+            <Dependent Role="arac_bilgileri">
+              <PropertyRef Name="kisi_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_park_yeri_arac_bilgileri">
+          <End Role="arac_bilgileri" Type="Self.arac_bilgileri" Multiplicity="1" />
+          <End Role="park_yeri" Type="Self.park_yeri" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="arac_bilgileri">
+              <PropertyRef Name="arac_id" />
+            </Principal>
+            <Dependent Role="park_yeri">
+              <PropertyRef Name="arac_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="apartmanEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="arac_bilgileri" EntityType="Self.arac_bilgileri" />
+          <EntitySet Name="kisi_bilgileri" EntityType="Self.kisi_bilgileri" />
+          <EntitySet Name="park_yeri" EntityType="Self.park_yeri" />
+          <AssociationSet Name="FK_arac_bilgileri_kisi_bilgileri" Association="Self.FK_arac_bilgileri_kisi_bilgileri">
+            <End Role="kisi_bilgileri" EntitySet="kisi_bilgileri" />
+            <End Role="arac_bilgileri" EntitySet="arac_bilgileri" />
+          </AssociationSet>
+          <AssociationSet Name="FK_park_yeri_arac_bilgileri" Association="Self.FK_park_yeri_arac_bilgileri">
+            <End Role="arac_bilgileri" EntitySet="arac_bilgileri" />
+            <End Role="park_yeri" EntitySet="park_yeri" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="apartmanModelStoreContainer" CdmEntityContainer="apartmanEntities">
+          <EntitySetMapping Name="arac_bilgileri">
+            <EntityTypeMapping TypeName="apartmanModel.arac_bilgileri">
+              <MappingFragment StoreEntitySet="arac_bilgileri">
+                <ScalarProperty Name="arac_id" ColumnName="arac_id" />
+                <ScalarProperty Name="arac_plaka" ColumnName="arac_plaka" />
+                <ScalarProperty Name="arac_marka" ColumnName="arac_marka" />
+                <ScalarProperty Name="arac_renk" ColumnName="arac_renk" />
+                <ScalarProperty Name="kisi_id" ColumnName="kisi_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="kisi_bilgileri">
+            <EntityTypeMapping TypeName="apartmanModel.kisi_bilgileri">
+              <MappingFragment StoreEntitySet="kisi_bilgileri">
+                <ScalarProperty Name="kisi_id" ColumnName="kisi_id" />
+                <ScalarProperty Name="tc_kimlik" ColumnName="tc_kimlik" />
+                <ScalarProperty Name="ad" ColumnName="ad" />
+                <ScalarProperty Name="soyad" ColumnName="soyad" />
+                <ScalarProperty Name="cep_telefonu" ColumnName="cep_telefonu" />
+                <ScalarProperty Name="Adres" ColumnName="Adres" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="park_yeri">
+            <EntityTypeMapping TypeName="apartmanModel.park_yeri">
+              <MappingFragment StoreEntitySet="park_yeri">
+                <ScalarProperty Name="parkyeri_id" ColumnName="parkyeri_id" />
+                <ScalarProperty Name="Parkyeri" ColumnName="Parkyeri" />
+                <ScalarProperty Name="arac_id" ColumnName="arac_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
